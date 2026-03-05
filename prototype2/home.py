@@ -327,45 +327,49 @@ if st.session_state.home_view == "landing":
 </div>
 """, unsafe_allow_html=True)
 
-    # Tab selector — slim pills
+    # Tab selector — real Streamlit buttons styled as tabs
     if "demo_tab" not in st.session_state:
         st.session_state.demo_tab = "ml"
 
     ml_on = st.session_state.demo_tab == "ml"
-    st.markdown(f"""
-<div style="background:#040d1a;padding:0 80px 0;display:flex;gap:8px;border-bottom:1px solid #0d1f35">
-  <button onclick="window.location.href='?tab=ml'"
-    style="background:{'#00d4aa' if ml_on else 'transparent'};
-           color:{'#030b18' if ml_on else '#475569'};
-           border:1px solid {'#00d4aa' if ml_on else '#1e3a5f'};
-           border-bottom:none; border-radius:8px 8px 0 0;
-           padding:8px 18px; font-size:12px; font-weight:700;
-           font-family:'DM Sans',sans-serif; cursor:pointer; margin-bottom:-1px;
-           transition:all 0.2s">
-    ◆ ML Score Predictor
-  </button>
-  <button onclick="window.location.href='?tab=ai'"
-    style="background:{'transparent' if ml_on else '#00d4aa'};
-           color:{'#475569' if ml_on else '#030b18'};
-           border:1px solid {'#1e3a5f' if ml_on else '#00d4aa'};
-           border-bottom:none; border-radius:8px 8px 0 0;
-           padding:8px 18px; font-size:12px; font-weight:700;
-           font-family:'DM Sans',sans-serif; cursor:pointer; margin-bottom:-1px;
-           transition:all 0.2s">
-    ◈ AI Recommendations
-  </button>
-</div>
+
+    st.markdown("""
+<style>
+/* Active tab */
+div[data-testid="stHorizontalBlock"] div.tab-active .stButton > button {
+    background: #00d4aa !important; color: #030b18 !important;
+    border: 1px solid #00d4aa !important; border-radius: 8px 8px 0 0 !important;
+    font-size: 12px !important; font-weight: 700 !important;
+    padding: 7px 18px !important; width: auto !important;
+}
+/* Inactive tab */
+div[data-testid="stHorizontalBlock"] div.tab-inactive .stButton > button {
+    background: transparent !important; color: #475569 !important;
+    border: 1px solid #1e3a5f !important; border-radius: 8px 8px 0 0 !important;
+    font-size: 12px !important; font-weight: 500 !important;
+    padding: 7px 18px !important; width: auto !important;
+}
+div[data-testid="stHorizontalBlock"] div.tab-inactive .stButton > button:hover {
+    color: #94a3b8 !important; border-color: #334155 !important;
+}
+</style>
 """, unsafe_allow_html=True)
 
-    # Handle tab switching via query param
-    if st.query_params.get("tab") == "ml":
-        st.query_params.clear()
-        st.session_state.demo_tab = "ml"
-        st.rerun()
-    if st.query_params.get("tab") == "ai":
-        st.query_params.clear()
-        st.session_state.demo_tab = "ai"
-        st.rerun()
+    st.markdown("<div style='background:#040d1a;padding:12px 80px 0;border-bottom:1px solid #0d1f35;display:flex'>", unsafe_allow_html=True)
+    tab_gap, tab_ml, tab_ai, tab_rest = st.columns([0.01, 1.4, 1.6, 8])
+    with tab_ml:
+        st.markdown(f'<div class="{"tab-active" if ml_on else "tab-inactive"}">', unsafe_allow_html=True)
+        if st.button("◆ ML Score Predictor", key="tab_ml"):
+            st.session_state.demo_tab = "ml"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    with tab_ai:
+        st.markdown(f'<div class="{"tab-active" if not ml_on else "tab-inactive"}">', unsafe_allow_html=True)
+        if st.button("◈ AI Recommendations", key="tab_ai"):
+            st.session_state.demo_tab = "ai"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # ── TAB 1: ML Score Predictor ──
     if st.session_state.demo_tab == "ml":

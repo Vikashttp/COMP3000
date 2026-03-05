@@ -4,5 +4,17 @@
     "role": "Admin",
     "name": "Platform Admin",
     "email": "admin@veridex.com"
+  },
+  "vikas@gmail.com": {
+    "password": "4827a7dd893c195065d17654c3e1b476c02ded870dd950d0361d90d8d9b3aac9",
+    "role": "Analyst",
+    "name": "vikash",
+    "email": "vikas@gmail.com"
+  },
+  "vikasanju.1212@gmail.com": {
+    "password": "c134d6ba03d565af689c1b760d3f49cc27b39aaa0afcef51f5e0040d4b6f2504",
+    "role": "Viewer",
+    "name": "vikas",
+    "email": "vikasanju.1212@gmail.com"
   }
 }
